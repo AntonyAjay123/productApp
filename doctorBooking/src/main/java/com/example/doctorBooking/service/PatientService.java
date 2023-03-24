@@ -23,6 +23,7 @@ public class PatientService {
         JSONArray array = new JSONArray();
         for(Patient patient:patients){
             JSONObject json = new JSONObject();
+            json.put("patientId",patient.getPatientId());
             json.put("name",patient.getName());
             json.put("age",patient.getAge());
             json.put("illness",patient.getIllness());
@@ -36,10 +37,15 @@ public class PatientService {
     public void savePatient(Patient newPatient){
         patientRepository.save(newPatient);
     }
-    public List<Patient> findById(Integer id){
-        List<Patient> patient= new ArrayList<>();
-        patient.add(patientRepository.findById(id).get());
-        return patient;
+    public String findById(Integer id){
+        Patient patient=patientRepository.findById(id).get();
+        JSONObject json = new JSONObject();
+        json.put("name",patient.getName());
+        json.put("age",patient.getAge());
+        json.put("illness",patient.getIllness());
+        json.put("admitDate",patient.getAdmitDate());
+        json.put("doctorId",patient.getDoctor().getDoctorId());
+        return json.toString();
     }
 
     public List<Patient> findByDoctorId(Integer id){
